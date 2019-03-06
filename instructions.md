@@ -1,38 +1,78 @@
-# Bahmni Connect
-
-[![Build Status](https://travis-ci.org/Bahmni/openmrs-module-bahmniapps.svg?branch=master)](https://travis-ci.org/Bahmni/openmrs-module-bahmniapps)
+# Bahmni Connect - MNH Register
 
 This repository acts as the front end for the **Bahmni Connect**. It is compeltely written in **AngularJS**.
 
 
 # Build
 
-Please visit [Bahmni Wiki](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/46432277/Bahmni+Connect+development) for detailed instructions on **building** and **deploying** the front end for **Bahmni Connect**.
+AngularJS requires the following tool tree installed on your development machine.
 
-# Project structure
+    Xcode (only for mac)
 
-<pre>
-|-- .tx
-|   
-|-- scripts
-|	
-`-- ui
-    |-- Gruntfile.js
-    |-- app
-    |   |-- clinical
-    |   |-- common
-    |   |-- home
-    |	|-- i18n
-    |   |-- images
-    |   |-- index.html
-    |   |-- registration
-    |   |-- reports
-    |   |-- offline
-    |   |-- service-worker-events.js
-    |   |-- service-worker-reg.js
-    |
-    |-- test
-    |-- .jshint.rc
-    |-- bower.json
-    |-- package.json
-</pre>
+    Ruby
+
+    Node and Node Package Manager (npm)
+
+    Global node modules - bower, grunt, compass
+
+    Project specific node modules
+
+    Bower project components
+
+Use following instructions (the exact mechanism for doing step 1 would depend on the OS you are using, we have mentioned for mac).
+
+    Install Xcode and npm
+
+    Install the following modules required globally (This is a one time task)
+    npm install -g bower
+    npm install -g grunt-cli
+    gem install compass
+    Checkout the bahmni-connect repository on GitHub
+
+    You would have to run the following commands for Bahmni Connect front end project. Run these commands from the ui folder under Bahmni Connect front end project
+    # Install node dependencies (Installed into node_modules).
+    npm install
+    # Set up UI component/dependencies (This installs all the UI dependencies into app/components)
+    bower install
+    Checkout the bahmni-offline repository on GitHub. (Only require for android app)
+
+    Run this command from Bahmni connect front end project folder for creating a symlink into your vagrant /var/www:
+    # links dist folder
+    ./scripts/vagrant-link.sh
+
+Chrome App (PWA):
+
+PWA only works for  secure connection. That means, you need https connection to use PWA. Also, Google Chrome is the only recomended browser to use PWA.
+
+    To bundle PWA, run the following commands from ui folder under Bahmni Connect front end project
+    # To genearte css files
+    grunt compass
+    # To minify and bundle PWA related source code
+    grunt chrome
+    # To generate service workers files
+    grunt generate-sw
+    If you want to debug Connect PWA on your local machine, you should run "grunt devchrome" which will put unminified js files onto the "bahmni-connect/ui/dist/" location.
+
+
+    To run only tests related to PWA run the following command
+    grunt karma:chrome
+    To access bahmni-connect apps on chrome hit https://<host name>/bahmni-connect
+
+
+Android App:
+
+    Checkout the bahmni-offline repository on GitHub. (Only require for android app)
+    Follow the steps recomended in the README.md file of bahmni-offline project
+
+    To bundle Android app, run the following commands from ui folder under Bahmni Connect front end project
+    # To genearte css files
+    grunt compass
+    # To minify and bundle android app related source code
+    grunt android
+    Copy dist folder of bahmni-connect/ui folder to bahmni-offline/android/www/app
+
+    Run the following command from bahmni-offline/android to install the android app on the device (The device should be connected to the system).
+    ionic run android
+
+    To run only front end tests related to android run the following command
+    grunt karma:android
