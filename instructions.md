@@ -54,7 +54,8 @@ To bundle Android app, run the following commands from ui folder under Bahmni Co
     Copy dist folder of bahmni-connect/ui folder to bahmni-offline/android/www/app
 
 Run the following command from bahmni-offline/android to install the android app on the device (The device should be connected to the system).
-    ionic run android
+    
+	ionic run android
 
 To run only front end tests related to android run the following command
     
