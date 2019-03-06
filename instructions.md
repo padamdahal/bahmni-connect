@@ -6,6 +6,7 @@ This repository acts as the front end for the **Bahmni Connect**. It is compelte
 # Build
 
 Install the modules required globally (This is a one time task)
+
     npm install -g bower
     npm install -g grunt-cli
     gem install compass
