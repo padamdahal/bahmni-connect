@@ -2,7 +2,6 @@
 
 This repository acts as the front end for the **Bahmni Connect**. It is compeltely written in **AngularJS**.
 
-
 # Build
 
 Install the modules required globally (This is a one time task)
@@ -11,16 +10,17 @@ Install the modules required globally (This is a one time task)
     npm install -g grunt-cli
     gem install compass
 
-You would have to run the following commands for Bahmni Connect front end project. Run these commands from the ui folder under Bahmni Connect front end project
+Run these commands from the ui folder under Bahmni Connect front end project
 
     # Install node dependencies (Installed into node_modules).
     npm install
     # Set up UI component/dependencies (This installs all the UI dependencies into app/components)
     bower install
 
-Chrome App (PWA):
+**Chrome App (PWA):**
 
 PWA only works for  secure connection. That means, you need https connection to use PWA. Also, Google Chrome is the only recomended browser to use PWA.
+
 To bundle PWA, run the following commands from ui folder under Bahmni Connect front end project
 
     # To genearte css files
@@ -39,7 +39,7 @@ To run only tests related to PWA run the following command
 To access bahmni-connect apps on chrome hit https://<host name>/bahmni-connect
 
 
-Android App:
+**Android App:**
 
 Checkout the bahmni-offline repository on GitHub. (Only require for android app).
 
