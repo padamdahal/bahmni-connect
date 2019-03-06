@@ -21,20 +21,21 @@ You would have to run the following commands for Bahmni Connect front end projec
 Chrome App (PWA):
 
 PWA only works for  secure connection. That means, you need https connection to use PWA. Also, Google Chrome is the only recomended browser to use PWA.
+To bundle PWA, run the following commands from ui folder under Bahmni Connect front end project
 
-    To bundle PWA, run the following commands from ui folder under Bahmni Connect front end project
     # To genearte css files
     grunt compass
     # To minify and bundle PWA related source code
     grunt chrome
     # To generate service workers files
     grunt generate-sw
-    If you want to debug Connect PWA on your local machine, you should run "grunt devchrome" which will put unminified js files onto the "bahmni-connect/ui/dist/" location.
 
+If you want to debug Connect PWA on your local machine, you should run "grunt devchrome" which will put unminified js files onto the "bahmni-connect/ui/dist/" location.
+To run only tests related to PWA run the following command
 
-    To run only tests related to PWA run the following command
     grunt karma:chrome
-    To access bahmni-connect apps on chrome hit https://<host name>/bahmni-connect
+
+To access bahmni-connect apps on chrome hit https://<host name>/bahmni-connect
 
 
 Android App:
