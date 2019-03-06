@@ -41,8 +41,9 @@ To access bahmni-connect apps on chrome hit https://<host name>/bahmni-connect
 
 Android App:
 
-    Checkout the bahmni-offline repository on GitHub. (Only require for android app)
-    Follow the steps recomended in the README.md file of bahmni-offline project
+Checkout the bahmni-offline repository on GitHub. (Only require for android app).
+
+Follow the steps recomended in the README.md file of bahmni-offline project
 
     To bundle Android app, run the following commands from ui folder under Bahmni Connect front end project
     # To genearte css files
