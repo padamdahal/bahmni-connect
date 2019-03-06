@@ -5,25 +5,7 @@ This repository acts as the front end for the **Bahmni Connect**. It is compelte
 
 # Build
 
-AngularJS requires the following tool tree installed on your development machine.
-
-    Xcode (only for mac)
-
-    Ruby
-
-    Node and Node Package Manager (npm)
-
-    Global node modules - bower, grunt, compass
-
-    Project specific node modules
-
-    Bower project components
-
-Use following instructions (the exact mechanism for doing step 1 would depend on the OS you are using, we have mentioned for mac).
-
-    Install Xcode and npm
-
-    Install the following modules required globally (This is a one time task)
+Install the modules required globally (This is a one time task)
     npm install -g bower
     npm install -g grunt-cli
     gem install compass
