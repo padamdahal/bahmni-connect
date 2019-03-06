@@ -31,6 +31,7 @@ To bundle PWA, run the following commands from ui folder under Bahmni Connect fr
     grunt generate-sw
 
 If you want to debug Connect PWA on your local machine, you should run "grunt devchrome" which will put unminified js files onto the "bahmni-connect/ui/dist/" location.
+
 To run only tests related to PWA run the following command
 
     grunt karma:chrome
