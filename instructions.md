@@ -10,18 +10,13 @@ Install the modules required globally (This is a one time task)
     npm install -g bower
     npm install -g grunt-cli
     gem install compass
-    Checkout the bahmni-connect repository on GitHub
 
-    You would have to run the following commands for Bahmni Connect front end project. Run these commands from the ui folder under Bahmni Connect front end project
+You would have to run the following commands for Bahmni Connect front end project. Run these commands from the ui folder under Bahmni Connect front end project
+
     # Install node dependencies (Installed into node_modules).
     npm install
     # Set up UI component/dependencies (This installs all the UI dependencies into app/components)
     bower install
-    Checkout the bahmni-offline repository on GitHub. (Only require for android app)
-
-    Run this command from Bahmni connect front end project folder for creating a symlink into your vagrant /var/www:
-    # links dist folder
-    ./scripts/vagrant-link.sh
 
 Chrome App (PWA):
 
