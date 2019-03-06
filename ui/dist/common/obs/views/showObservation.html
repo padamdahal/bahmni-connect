@@ -25,7 +25,7 @@
             <video class="video" controls class="img-concept" preload="metadata">
                 <source ng-src="{{'/document_images/' + observation.value}}" type="video/mp4">
                 Your browser does not support the video tag.
-            </video>
+            </source></video>
         </div>
         <button class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}" toggle="observation.showDetails">
             <i class="fa fa-angle-down"></i>

@@ -66,5 +66,8 @@
   "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/Bahmni/bahmni-connect/issues"
+  },
+  "dependencies": {
+    "compass": "^0.1.1"
   }
 }
