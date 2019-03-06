@@ -2,7 +2,7 @@
 // This nepali calendar customization is based on the BAHMNI 0.90 version
 // Modification might require for other versions of BAHMNI
 
-// Nepali datepicker everywhere
+// Nepali datepicker everywhere ------
 try{
 	var app = angular.module('bahmni.common.uiHelper');
 	app.directive('input', function () {

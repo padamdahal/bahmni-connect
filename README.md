@@ -9,6 +9,13 @@ This repository acts as the front end for the **Bahmni Connect**. It is compelte
 
 Please visit [Bahmni Wiki](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/46432277/Bahmni+Connect+development) for detailed instructions on **building** and **deploying** the front end for **Bahmni Connect**.
 
+## To genearte css files
+grunt compass
+## To minify and bundle PWA related source code
+grunt chrome
+## To generate service workers files
+grunt generate-sw
+
 # Project structure
 
 <pre>
