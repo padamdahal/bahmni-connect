@@ -45,15 +45,15 @@ Checkout the bahmni-offline repository on GitHub. (Only require for android app)
 
 Follow the steps recomended in the README.md file of bahmni-offline project
 
-    To bundle Android app, run the following commands from ui folder under Bahmni Connect front end project
+To bundle Android app, run the following commands from ui folder under Bahmni Connect front end project
     # To genearte css files
     grunt compass
     # To minify and bundle android app related source code
     grunt android
     Copy dist folder of bahmni-connect/ui folder to bahmni-offline/android/www/app
 
-    Run the following command from bahmni-offline/android to install the android app on the device (The device should be connected to the system).
+Run the following command from bahmni-offline/android to install the android app on the device (The device should be connected to the system).
     ionic run android
 
-    To run only front end tests related to android run the following command
+To run only front end tests related to android run the following command
     grunt karma:android
