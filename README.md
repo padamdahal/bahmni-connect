@@ -28,6 +28,7 @@ Please visit [Bahmni Wiki](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/46
     |   |-- registration
     |   |-- reports
     |   |-- offline
+	|	|-- plugins (Nepali calendar package, date converter, custom control for offline, custom dashboard html pages)
     |   |-- service-worker-events.js
     |   |-- service-worker-reg.js
     |
