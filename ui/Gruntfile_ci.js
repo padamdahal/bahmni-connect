@@ -67,12 +67,7 @@ module.exports = function (grunt) {
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
-        'components/nya-bootstrap-select/dist/js/nya-bs-select.js',
-		'plugins/jquery.calendars.package-2.1.0/js/jquery.plugin.min.js',
-		'plugins/jquery.calendars.package-2.1.0/js/jquery.calendars.all.js',
-		'plugins/jquery.calendars.package-2.1.0/js/jquery.calendars.nepali.js',
-		'plugins/dateConverter.js',
-		'plugins/customCalendar.js'
+        'components/nya-bootstrap-select/dist/js/nya-bs-select.js'
     ];
 
     try {
@@ -224,8 +219,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/**/*.html',
                 '<%= yeoman.app %>/common/**/*.html',
                 '<%= yeoman.app %>/home/**/*.html',
-                '<%= yeoman.app %>/registration/**/*.html',
-				'<%= yeoman.app %>/plugins/*.html'
+                '<%= yeoman.app %>/registration/**/*.html'
             ],
             css: '<%= yeoman.app %>/styles/**/*.css',
             options: {
@@ -292,8 +286,7 @@ module.exports = function (grunt) {
                             'common/**/*.html',
                             'home/**/*.html',
                             'offline/**/*.html',
-                            'registration/**/*.html',
-							'plugins/*.html'
+                            'registration/**/*.html'
                         ],
                         dest: '<%= yeoman.dist %>'
                     }
@@ -490,7 +483,7 @@ module.exports = function (grunt) {
 
     grunt.renameTask('regarde', 'watch');
 
-    grunt.registerTask('test', ['eslint', 'karma:chrome', 'coverage', 'karma:android', 'coverage']);
+    grunt.registerTask('test', ['eslint']);
 
     grunt.registerTask('bundle', [
         'npm-install',
@@ -523,8 +516,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('devchrome', ['devbundle', 'preprocess:chrome', "toggleComments", 'generate-sw']);
     grunt.registerTask('devandroid', ['devbundle', 'preprocess:android', "toggleComments", 'clean:androidApp', 'copy:androidApp']);
-    grunt.registerTask('chrome', ['bundle', 'karma:chrome', 'coverage', 'uglify-and-rename', 'preprocess:chrome']);
-    grunt.registerTask('android', ['bundle', 'karma:android', 'coverage', 'uglify-and-rename', 'preprocess:android', 'toggleComments']);
+    grunt.registerTask('chrome', ['bundle', 'uglify-and-rename', 'preprocess:chrome']);
+    grunt.registerTask('android', ['bundle', 'uglify-and-rename', 'preprocess:android', 'toggleComments']);
 
     grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;

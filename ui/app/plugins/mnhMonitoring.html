@@ -1,0 +1,123 @@
+<style>
+	.lg-block{
+		border:1px solid #eee;
+		padding:5px;
+		width:30%;
+		margin-right:5px;
+	}
+</style>
+<div style="padding:10px">
+    <section class="dashboard-section" style="padding:10px;font-size:120%">	
+		<div>
+			<table>
+				<tr>
+					<th>Estimated Date of Delivery</th>
+					<td>
+						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'LMP'">
+							{{a.value}}
+						</span>
+						| {{EDDString}} Days
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<br/>
+		
+		<div>
+			<div>{{obsGroup.conceptNameToDisplay}}</div>
+			<table>
+				<tr>
+					<th>Visit Type</th>
+					<th ng-repeat="visits in expectedVisits">{{visits}}</th>
+				</tr>
+				<tr>
+					<td>ANC Checkup</td>
+					<td ng-repeat="visit in expectedVisits" style="color:green;font-weight:bold;text-align:center">
+						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'ANC Checkup' && a.valueAsString == visit">
+							<i class="fa fa-thumbs-up"></i> | {{a.observationDateTime | date}}
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<br/>
+		
+		<div>	
+			<table>
+				<tr>
+					<th>Iron/Folic (Tabs)</th><th>TD Given</th><th>HIV Status</th>
+				</tr>
+				<tr>
+					<td style="text-align:center">
+					{{ironfolic}}
+					</td>
+					<td style="text-align:center">
+						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'TD'">
+							{{a.valueAsString}} | 
+						</span>
+					</td>
+					<td style="text-align:center">
+						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'HIV status'">
+							{{a.valueAsString}}
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<br/>
+		
+		<div>	
+			<table>
+				<tr>
+					<th>Complications</th><th>aaa</th><th>bbb</th>
+				</tr>
+				<tr>
+					<td style="text-align:center">
+						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'Complications Present'">
+							<i class="fa fa-exclamation-circle"></i>{{a.valueAsString}} | {{a.observationDateTime | date}}
+						</span>
+					</td>
+					<td style="text-align:center">
+						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'HIV status'">
+							{{a.valueAsString}}
+						</span>
+					</td>
+					<td style="text-align:center">
+					{{ironfolic}}
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<br/>
+		
+		<div>	
+			<table>
+				<tr>
+					<th>Delivery Detail</th><th>aaa</th><th>bbb</th>
+				</tr>
+				<tr>
+					<td style="text-align:center">
+						<div ng-repeat="newborn in observations" ng-if="newborn.conceptNameToDisplay == 'Newborn Details'" style="border:1px solid red;margin-bottom:5px;">
+							<span ng-repeat="values in newborn.groupMembers">
+								{{values.conceptNameToDisplay}} : {{values.valueAsString}}</br>
+							</span>
+						</div>
+					</td>
+					<td style="">
+						<div ng-repeat="newborn in observations" ng-if="newborn.conceptNameToDisplay == 'Newborn Details'">
+							aaa
+						</div>
+					</td>
+					<td style="text-align:center">
+					{{ironfolic}}
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+    </section>
+</div>
