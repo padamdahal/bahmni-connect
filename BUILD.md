@@ -1,3 +1,4 @@
+## Build instructions
     npm install -g bower
     npm install -g grunt-cli
     gem install compass
