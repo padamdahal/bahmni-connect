@@ -1,6 +1,6 @@
 ## Changes in core code
 * Added 'Plugins' directory in ui/app
-** Nepali calendar plugins
+    * Nepali calendar plugins
 ** Nepali date converter
 ** Custom control for offline
 ** Html files for custom dashboard
