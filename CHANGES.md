@@ -1,4 +1,4 @@
-## Changes in core code
+## CHANGES
 * Added 'plugins' directory in ui/app
     * Nepali calendar plugins
     * Nepali date converter
