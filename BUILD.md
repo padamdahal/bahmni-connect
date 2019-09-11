@@ -18,5 +18,3 @@
     grunt chrome
     # To generate service workers files
     grunt generate-sw
-
-[Details](https://google.com)
