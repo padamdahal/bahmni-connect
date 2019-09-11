@@ -1,17 +1,16 @@
 ## Build instructions
+### Install bower, grunt and compass globally
     npm install -g bower
     npm install -g grunt-cli
     gem install compass
-    Checkout the bahmni-connect repository on GitHub
 
-    # Install node dependencies (Installed into node_modules).
+### Install node dependencies (Installed into node_modules).
     npm install
-    # Set up UI component/dependencies (This installs all the UI dependencies into app/components)
+
+### Set up UI component/dependencies (This installs all the UI dependencies into app/components)
     bower install
-    Checkout the bahmni-offline repository on GitHub. (Only require for android app)
-
-Chrome App (PWA):
-
+    
+### Chrome App (PWA):
     To bundle PWA, run the following commands from ui folder under Bahmni Connect front end project
     # To genearte css files
     grunt compass
@@ -19,3 +18,5 @@ Chrome App (PWA):
     grunt chrome
     # To generate service workers files
     grunt generate-sw
+
+[Details](https://google.com)
