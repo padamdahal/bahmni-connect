@@ -1,22 +1,40 @@
 <style>
-	.lg-block{
-		border:1px solid #eee;
-		padding:5px;
-		width:30%;
-		margin-right:5px;
-	}
+	table td, table th{padding:10px;}
 </style>
-<!-- div style="padding:10px">
-    <section class="dashboard-section" style="padding:10px;font-size:120%">	
+
+<div style="padding:10px;font-size:250%">
+    <section class="dashboard-section" style="padding:10px;font-size:120%">
+		<div>
+			<table>
+				<tr>
+					<th>First Visit Date</th>
+					<td>
+						<span>
+							{{convertDateTime(patientDetail.dateCreated)}}
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<th>Observations</th>
+					<td>
+						<span ng-repeat="obs in observations" ng-if="obs.formName == 'Gravida Para LMP and EDD'">
+							<span style="font-weight:bold;">{{obs.conceptName}}</span>: {{obs.value}}<br/>
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<br/>
+		
 		<div>
 			<table>
 				<tr>
 					<th>Estimated Date of Delivery</th>
 					<td>
-						<span ng-repeat="a in data['Antinetal Checkup Details']" ng-if="a.conceptNameToDisplay == 'LMP'">
-							{{a.value}}
+						<span ng-repeat="obs in observations" ng-if="obs.conceptName == 'LMP'">
+							{{calculateEdd(obs.value)['date']}} <span style="border-radius:3px; background:#88af28;color:#fff;padding:5px;">{{calculateEdd(obs.value)['remainingDays']}}</span>
 						</span>
-						| {{EDDString}} Days
 					</td>
 				</tr>
 			</table>
@@ -25,137 +43,25 @@
 		<br/>
 		
 		<div>
-			<div>{{}}</div>
+			<div></div>
 			<table>
 				<tr>
 					<th>Visit Type</th>
 					<th ng-repeat="visits in expectedVisits">{{visits}}</th>
+					<th>As per Protocol</th>
 				</tr>
 				<tr>
 					<td>ANC Checkup</td>
 					<td ng-repeat="visit in expectedVisits" style="color:green;font-weight:bold;text-align:center">
-						<span ng-repeat="a in data['Antinetal Checkup Details']" ng-if="a['ANC Checkup'] && a['ANC Checkup'] == visit">
-							<i class="fa fa-thumbs-up"></i> | {{a['Date Time'] | date}}
+						<span ng-repeat="dt in observations" ng-if="dt.conceptName == 'ANC Checkup' && dt.value == visit">
+							<i class="fa fa-check" style="font-size:150%" ng-if="visit != 'Other'"></i>
+							<br ng-if="visit != 'Other'"/>
+							<span class="small" style="color:#999;font-size:80%;">{{convertDateTime(dt.encounterDateTime)}}</span>
 						</span>
+						
 					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<br/>
-		
-		<div>	
-			<table>
-				<tr>
-					<th>Iron/Folic (Tabs)</th><th>TD Given</th><th>HIV Status</th>
-				</tr>
-				<tr>
-					<td style="text-align:center">
-					{{ironfolic}}
-					</td>
-					<td style="text-align:center">
-						<span ng-repeat="a in data['Antinetal Checkup Details']" ng-if="a['TD']">
-							{{a['TD']}} | 
-						</span>
-					</td>
-					<td style="text-align:center">
-						<span ng-repeat="a in data['Antinetal Checkup Details']" ng-if="a.conceptNameToDisplay == 'HIV status'">
-							{{a.valueAsString}}
-						</span>
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<br/>
-		
-		<div>	
-			<table>
-				<tr>
-					<th>Complications</th><th>aaa</th><th>bbb</th>
-				</tr>
-				<tr>
-					<td style="text-align:center">
-						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'Complications Present'">
-							<i class="fa fa-exclamation-circle"></i>{{a.valueAsString}} | {{a.observationDateTime | date}}
-						</span>
-					</td>
-					<td style="text-align:center">
-						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'HIV status'">
-							{{a.valueAsString}}
-						</span>
-					</td>
-					<td style="text-align:center">
-					{{ironfolic}}
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<br/>
-		
-		<div>	
-			<table>
-				<tr>
-					<th>Delivery Detail</th><th>aaa</th><th>bbb</th>
-				</tr>
-				<tr>
-					<td style="text-align:center">
-						<div ng-repeat="newborn in observations" ng-if="newborn.conceptNameToDisplay == 'Newborn Details'" style="border:1px solid red;margin-bottom:5px">
-							<span ng-repeat="values in newborn.groupMembers">
-								{{values.conceptNameToDisplay}} : {{values.valueAsString}}
-							</span>
-						</div>
-					</td>
-					<td style="">
-						<div ng-repeat="newborn in observations" ng-if="newborn.conceptNameToDisplay == 'Newborn Details'">
-							aaa
-						</div>
-					</td>
-					<td style="text-align:center">
-					{{ironfolic}}
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-    </section>
-</div>
-
-
-<hr/ !-->
-
-<div style="padding:10px">
-    <section class="dashboard-section" style="padding:10px;font-size:120%">	
-		<div>
-			<table>
-				<tr>
-					<th>Estimated Date of Delivery</th>
-					<td>
-						<span ng-repeat="a in data['Antinetal Checkup Details']" ng-if="a.conceptNameToDisplay == 'LMP'">
-							{{a.value}}
-						</span>
-						| {{EDDString}} Days
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<br/>
-		
-		<div>
-			<div>{{}}</div>
-			<table>
-				<tr>
-					<th>Visit Type</th>
-					<th ng-repeat="visits in expectedVisits">{{visits}}</th>
-				</tr>
-				<tr>
-					<td>ANC Checkup</td>
-					<td ng-repeat="visit in expectedVisits" style="color:green;font-weight:bold;text-align:center">
-						<span ng-repeat="dt in data" ng-if="dt['ANC Checkup'] && dt['ANC Checkup'] == visit">
-							<i class="fa fa-thumbs-up"></i> | {{dt['Date Time'] | date}}
-						</span>
+					<td style="color:green;font-weight:bold;text-align:center">
+						<i class="fa fa-check" style="font-size:150%" ng-if="ancAsPerProtocol(observations)"></i>
 					</td>
 				</tr>
 			</table>
@@ -169,73 +75,141 @@
 					<th>Total Iron/Folic</th><th>TD Given</th><th>HIV Status</th>
 				</tr>
 				<tr>
-					<td style="text-align:center">
-						<span>
-							{{totalIronFolic(data)}} Tabs.
-						</span>
-					</td>
-					<td style="text-align:center">
-						<span ng-repeat="dt in data" ng-if="dt['TD']">
-							{{dt['TD']}} | 
-						</span>
-					</td>
-					<td style="text-align:center">
-						<span ng-repeat="dt in data['Antinetal Checkup Details']" ng-if="a.conceptNameToDisplay == 'HIV status'">
-							{{a.valueAsString}}
-						</span>
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<br/>
-		
-		<div>	
-			<table>
-				<tr>
-					<th>Complications</th><th>aaa</th><th>bbb</th>
-				</tr>
-				<tr>
-					<td style="text-align:center">
-						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'Complications Present'">
-							<i class="fa fa-exclamation-circle"></i>{{a.valueAsString}} | {{a.observationDateTime | date}}
-						</span>
-					</td>
-					<td style="text-align:center">
-						<span ng-repeat="a in anc" ng-if="a.conceptNameToDisplay == 'HIV status'">
-							{{a.valueAsString}}
-						</span>
-					</td>
-					<td style="text-align:center">
-					{{ironfolic}}
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<br/>
-		
-		<div>	
-			<table>
-				<tr>
-					<th>Delivery Detail</th><th>aaa</th><th>bbb</th>
-				</tr>
-				<tr>
-					<td style="text-align:center">
-						<div ng-repeat="newborn in observations" ng-if="newborn.conceptNameToDisplay == 'Newborn Details'" style="border:1px solid red;margin-bottom:5px">
-							<span ng-repeat="values in newborn.groupMembers">
-								{{values.conceptNameToDisplay}} : {{values.valueAsString}}
-							</span>
+					<td style="text-align:left">
+						<div style="display:block">
+							<span>Iron/Folic : {{totalIronFolic(observations)}} Tabs</span>
 						</div>
+						
+					</td>
+					<td style="text-align:left">
+						<span ng-repeat="dt in observations" ng-if="dt.conceptName == 'TD'">
+							<span>{{dt.value}} | {{convertDateTime(dt.encounterDateTime)}}</span><br/>
+						</span>
+					</td>
+					<td style="text-align:left">
+						<span ng-repeat="dt in observations" ng-if="dt.formName == 'HIV and Syphlis Test'">
+							{{dt.conceptName}} : {{dt.value}} | {{convertDateTime(dt.encounterDateTime)}}<br/>
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<br/>
+		
+		<div>	
+			<table>
+				<tr>
+					<th>Complications</th><th></th><th></th>
+				</tr>
+				<tr>
+					<td style="text-align:center">
+						<span ng-repeat="dt in observations" ng-if="dt.conceptName == 'Complication'">
+							<i class="fa fa-exclamation-circle" style="color:red"></i>{{dt.value}} | {{convertDateTime(dt.encounterDateTime)}}
+						</span>
+					</td>
+					<td style="text-align:center">
+						
+					</td>
+					<td style="text-align:center">
+					
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<br/>
+		
+		<div>	
+			<table>
+				<tr>
+					<th>Delivery Detail</th><th>Newborn Detail</th><th></th>
+				</tr>
+				<tr>
+					<td style="text-align:left">
+						<div>
+							<span ng-repeat="dt in observations" ng-if="dt.formName == 'Delivery Form' && dt.conceptName == 'HW involved in delivery'">Delivery By: {{dt.value}} | {{convertDateTime(dt.encounterDateTime)}}</span><br/>
+							<span ng-repeat="dt in observations" ng-if="dt.formName == 'Delivery Form' && dt.conceptName == 'Type of Delivery'">Delivery Type: {{dt.value}}</span>
+						</div>
+						
 					</td>
 					<td style="">
-						<div ng-repeat="newborn in observations" ng-if="newborn.conceptNameToDisplay == 'Newborn Details'">
-							aaa
+						<div ng-repeat="newborn in observations" ng-if="newborn.formName == 'Newborn Details'" style="margin-bottom:5px">
+							<span>{{newborn.conceptName}} : {{newborn.value}}</span><br/>
 						</div>
 					</td>
 					<td style="text-align:center">
-					{{ironfolic}}
+					
 					</td>
+				</tr>
+			</table>
+		</div>
+		<!------------------ PNC Details ------------------------>
+		<br/>
+		<div>
+			<table>
+				<tr>
+					<td colspan="5">PNC Detail</td>
+				</tr>
+				<tr>
+					<th ng-repeat="pnc in expectedPnc">{{pnc}}</th>
+					<th>Additional</th>
+					<th>As Per Protocol</th>
+				</tr>
+				<tr>
+					<td ng-repeat="pnc in expectedPnc" style="color:green;font-weight:bold;text-align:center">
+						<span ng-repeat="dt in observations" ng-if="dt.conceptName == 'PNC detail' && dt.value == pnc">
+							<i class="fa fa-check" style="font-size:150%"></i><br/><span class="small" style="color:#999;font-size:80%;">{{convertDateTime(dt.encounterDateTime)}}</span>
+						</span>
+					</td>
+					<td style="">
+						<span ng-repeat="dt in observations" ng-if="dt.conceptName == 'PNC detail' && dt.value == 'Additional'">
+							<span class="small" style="color:#999;font-size:80%;">{{convertDateTime(dt.encounterDateTime)}}</span></br>
+						</span>
+					</td>
+					<td style="text-align:center">
+						<span ng-if="pncAsPerProtocol(observations)">
+							<i class="fa fa-check" style="font-size:150%"></i><br/>
+						</span>
+						<span ng-if="!pncAsPerProtocol(observations)">
+							<i class="fa fa-close" style="font-size:150%;color:red"></i><br/>
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<!------------------ Incentive ------------------------>
+		<br/>
+		<div>
+			<table>
+				<tr>
+					<td colspan="5">Incentive Eligibility</td>
+				</tr>
+				<tr>
+					<th>ANC</th>
+					<th>PNC</th>
+					<th>Other</th>
+				</tr>
+				<tr>
+					<td style="text-align:center">
+						
+						<span ng-if="incentiveEligibility(observations)['anc']">
+							<i class="fa fa-check" style="font-size:150%"></i><br/>
+						</span>
+						<span ng-if="!incentiveEligibility(observations)['anc']">
+							<i class="fa fa-close" style="font-size:150%;color:red"></i><br/>
+						</span>
+					</td>
+					<td style="text-align:center">
+						<span ng-if="incentiveEligibility(observations)['pnc']">
+							<i class="fa fa-check" style="font-size:150%"></i><br/>
+						</span>
+						<span ng-if="!incentiveEligibility(observations)['pnc']">
+							<i class="fa fa-close" style="font-size:150%;color:red"></i><br/>
+						</span>
+					</td>
+					<td>Other</td>
 				</tr>
 			</table>
 		</div>
