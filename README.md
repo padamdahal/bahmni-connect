@@ -36,3 +36,10 @@ Please visit [Bahmni Wiki](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/46
     |-- bower.json
     |-- package.json
 </pre>
+
+# To genearte css files
+grunt compass
+# To minify and bundle PWA related source code
+grunt chrome
+# To generate service workers files
+grunt generate-sw

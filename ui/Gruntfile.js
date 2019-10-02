@@ -23,7 +23,10 @@ module.exports = function (grunt) {
         'components/ng-tags-input/ng-tags-input.min.css',
         'components/offline/themes/*.css',
         'components/jquery-ui/themes/smoothness/jquery-ui.min.css',
-        'components/nya-bootstrap-select/dist/css/nya-bs-select.css'
+        'components/nya-bootstrap-select/dist/css/nya-bs-select.css',
+		'plugins/jquery.calendars.package-2.1.0/css/jquery.calendars.picker.css',
+		'plugins/jquery.calendars.package-2.1.0/css/jquery.calendars.picker.mob.css',
+		'plugins/jquery.calendars.package-2.1.0/css/ui.calendars.picker.css'
     ];
 
     var libraryJSFiles = [
