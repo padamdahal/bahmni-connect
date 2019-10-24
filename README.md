@@ -13,26 +13,20 @@
 
 # Code Changes
 Updated the ui/gruntfile.js to add the all contents of plugins directory to be copied in dist and make them available offline during build.
-
-Line 27 to 29
-
-Line 74 to 78
-
-Line 231
-
-Line 299
+	Line 27 to 29
+	Line 74 to 78
+	Line 231
+	Line 299
 
 Updated clinical/index.html to include additional js and css files from plugins directory
-
-Line 607 to 611
+	Line 607 to 611
 
 All features are handeled by angular at default views provided by core bahmni-connect.
 There are no changes in bahmni connect core application codes.
-# Build - Chrome App (PWA)
 
-# To genearte css files
-grunt compass
-# To minify and bundle PWA related source code
-grunt --force chrome 
-# To generate service workers files
-grunt generate-sw
+## Build - Chrome App (PWA)
+<pre>
+grunt compass # generate css files
+grunt --force chrome #minify and bundle PWA related source code
+grunt generate-sw #generate service workers files
+</pre>
