@@ -290,6 +290,16 @@ function DateConverter(){
         return this.nepaliYear+' '+this.nepaliMonthNames[this.nepaliMonth-1]+' '+this.nepaliDate;
     };
 	
+	this.toNepaliStringShort = function(){
+		if(this.nepaliDate <=9){
+			this.nepaliDate = '0'+this.nepaliDate;
+		}
+		if(this.nepaliMonth <=9){
+			this.nepaliMonth = '0'+this.nepaliMonth;
+		}
+        return this.nepaliYear+'-'+this.nepaliMonth+'-'+this.nepaliDate;
+    };
+	
 	///////////
 
     this.getNepaliDateDifference = function(year, month, date){

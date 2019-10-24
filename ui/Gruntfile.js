@@ -75,7 +75,7 @@ module.exports = function (grunt) {
 		'plugins/jquery.calendars.package-2.1.0/js/jquery.calendars.all.js',
 		'plugins/jquery.calendars.package-2.1.0/js/jquery.calendars.nepali.js',
 		'plugins/dateConverter.js',
-		'plugins/customCalendar.js'
+		'plugins/nepalPlugins.js'
     ];
 
     try {

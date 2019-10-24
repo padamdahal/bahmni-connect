@@ -22,36 +22,10 @@ var crud=["add","delete","get","put","clear","count","each"];for(var i=0;i<crud.
 result.index=function(indexName){return{"each":function(callback,range,direction){return indexOp("each",indexName,[callback,range,direction]);},"eachKey":function(callback,range,direction){return indexOp("eachKey",indexName,[callback,range,direction]);},"get":function(key){return indexOp("get",indexName,[key]);},"count":function(){return indexOp("count",indexName,[]);},"getKey":function(key){return indexOp("getKey",indexName,[key]);}};};return result;}});}});$.indexedDB.IDBCursor=IDBCursor;$.indexedDB.IDBTransaction=IDBTransaction;$.idb=$.indexedDB;})(jQuery);
 /* End of jQuery IndexedDB plugin */
 
-// Form condition rules
-Bahmni.ConceptSet.FormConditions.rules = {
-    'Diastolic Data' : function (formName, formFieldValues) {
-        var systolic = formFieldValues['Systolic'];
-        var diastolic = formFieldValues['Diastolic'];
-        if (systolic || diastolic) {
-            return {
-                enable: ["Posture"]
-            }
-        } else {
-            return {
-                disable: ["Posture"]
-            }
-        }
-    },
-    'Systolic Data' : function (formName, formFieldValues) {
-        var systolic = formFieldValues['Systolic'];
-        var diastolic = formFieldValues['Diastolic'];
-        if (systolic || diastolic) {
-            return {
-                enable: ["Posture"]
-            }
-        } else {
-            return {
-                disable: ["Posture"]
-            }
-        }
-    }
-};
-// End of form condition rules
+$(document).ready(function(){
+	
+});
+
 
 // Nepali datepicker everywhere
 try{
@@ -190,9 +164,8 @@ try {
 		var link = function ($scope, element, attrs, ngModel) {
 			
 			if(element.attr('title') == "{{ ::'CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY' | translate}}"){
-				if(event != undefined){
-					$scope.conceptSet.minimizeInnerSections(event);
-				}
+				//console.log('Trigger "Collapse All" Event');
+				$scope.conceptSet.minimizeInnerSections(event);
 				
 			}			
 		};
@@ -212,7 +185,6 @@ try{
 	var displayControl = angular.module('bahmni.common.displaycontrol.custom');
 	
 	displayControl.run(['$rootScope', '$state', 'observationsService', function ($rootScope, $state, observationsService){
-		
 		// Get patient by uuid
 		$rootScope.getPatient = function(patientUuid){
 			var pt;
@@ -232,8 +204,9 @@ try{
 		
 		/* extract leaf observation values from nested concepts/forms */
 		var Json = [];
+		var parentConcept;
 		$rootScope.leafObservations = function(observations) {
-			var parentConcept;
+			
 			$.each(observations, function(i, observation){
 				if(observation.hasOwnProperty("groupMembers") && observation !== undefined){
 					var temp = {};
@@ -244,6 +217,7 @@ try{
 						$rootScope.leafObservations(observation.groupMembers);
 						parentConcept = observation.conceptNameToDisplay;
 					}else{
+						//console.log(observation);
 						temp["conceptName"] = observation.conceptNameToDisplay;
 						temp["type"] = observation.type;
 						temp["value"] = observation.valueAsString;
@@ -266,52 +240,16 @@ try{
 			converter.setEnglishDate(dateTime.getFullYear(), dateTime.getMonth()+1, dateTime.getDate());						
 			return converter.toNepaliString();
 		};
-		
-		// ANC as per Protocol
-		$rootScope.ancAsPerProtocol = function(observations){
-			var asPerProtocol = false;
-			var expected = ["Fourth Month", "Sixth Month", "Eighth Month", "Ninth Month"];
-					
-			var temp = [];
-			$.each(expected, function(index, visit){
-				$.each(observations, function(i, dt) {
-					if(dt.conceptName == 'ANC Checkup' && dt.value == visit)
-						temp[visit] = true;
-				});
-			});
-			if(temp["Fourth Month"] && temp["Sixth Month"] && temp["Eighth Month"] && temp["Ninth Month"]){
-				return true;
-			}else{
-				return false;
-			}
-		};
-		
-		// PNC as per protocol
-		$rootScope.pncAsPerProtocol = function(observations){
-			var expectedPnc = ["First (within 24 hours)", "2nd (within 3 days of delivery)", "3rd (within 7 days of delivery)"];
-			var asPerProtocol = false;
-			var temp = [];
-			$.each(expectedPnc, function(index, visit){
-				$.each(observations, function(i, dt) {
-					if(dt.conceptName == "PNC detail" && dt.value == visit)
-						temp[visit] = true;
-				});
-			});
-			if(temp["First (within 24 hours)"] && temp["2nd (within 3 days of delivery)"] && temp["3rd (within 7 days of delivery)"]){
-				return true;
-			}else{
-				return false;
-			}
-		};
 	}]);
-	
+
 	// MNH Monitoring Dashboard
 	displayControl.directive('mnhMonitoring', ['$rootScope','observationsService', 'appService', 'spinner', function ($rootScope, observationsService, appService, spinner) {
 		var link = function ($scope) {
 			
+			// content url - the url for html template
 			$scope.contentUrl = "../plugins/mnhMonitoring.html";
+			$scope.observations = [];
 			
-			// content url - the url for html template	
 			$scope.getPatient = function(patientUuid){
 				$.indexedDB("Bahmni").objectStore("patient").each(function(pt){
 					if(pt.value.value.uuid == patientUuid){
@@ -321,46 +259,63 @@ try{
 			}
 		
 			/* extract leaf observation values from nested concepts/forms */
-			
-			var Json = [];	
-			$scope.leafObservations = function(observations) {
+			var finalJson = [];
+			$scope.getLeafObservations = function(observations) {
 				var parentConcept;
-				$.each(observations, function(i, observation){
-					if(observation.hasOwnProperty("groupMembers") && observation !== undefined){
+				var encounterDateTime;
+				parentConcept = observations.conceptNameToDisplay;
+				encounterDateTime = observations.encounterDateTime;
+				if(observations.hasOwnProperty("groupMembers") && observations !== undefined){
+					$.each(observations.groupMembers, function(key,value){
 						var temp = {};
-						if(observation.concept.set){
-							parentConcept = observation.conceptNameToDisplay;
-						}
-						if(observation.hasOwnProperty('groupMembers') && observation.groupMembers.length > 0){
-							$scope.leafObservations(observation.groupMembers);
-							parentConcept = observation.conceptNameToDisplay;
+						if(value.concept.set){
+								parentConcept = value.conceptNameToDisplay;
+							}
+						if(value.hasOwnProperty('groupMembers') && value.groupMembers.length > 0){
+							$scope.getLeafObservations(value.groupMembers);
 						}else{
-							temp["conceptName"] = observation.conceptNameToDisplay;
-							temp["type"] = observation.type;
-							temp["value"] = observation.valueAsString;
-							temp["encounterDateTime"] = observation.encounterDateTime;
-							temp["provider"] = observation.providers[0].name;
+							temp["conceptName"] = value.conceptNameToDisplay;
+							temp["value"] = value.valueAsString;
+							temp["encounterDateTime"] = value.encounterDateTime;
+							temp["provider"] = value.providers[0].name;
 							temp["formName"] = parentConcept;
-							Json.push(temp);
-							parentConcept = '';
+							$scope.observations.push(temp);
 						}
-					}
-				});
-				return Json;
+							
+					});
+				}
 			};
-			/*******************************************************/
 			
-			var conceptNames = ["Maternal and Neonatal Health"];
+			//
+			
+			var conceptNames = [
+				"Gravida Para LMP and EDD",
+				"Antenetal Checkup Details",
+				"HIV and Syphlis Test",
+				"Complications Present",
+				"Intrapartum and Admission Form",
+				"Delivery Form",
+				"Newborn Details",
+				"PNC Checkup",
+				"Blood Transfusion"
+			];
 			
 			$scope.getPatient($scope.patient.uuid);
-			
-			spinner.forPromise(observationsService.fetch($scope.patient.uuid, conceptNames, "all", 1, $scope.visitUuid, undefined).then(function (response) {
+			console.log($scope.patientDetail);
+            
+			spinner.forPromise(observationsService.fetch($scope.patient.uuid, conceptNames, "all", undefined, undefined, undefined).then(function (response) {
                 var observations = response.data;
-				console.log(observations);
+				
+				
+				
 				$scope.expectedVisits = ["Fourth Month", "Sixth Month", "Eighth Month", "Ninth Month","Other"];
 				
-				$scope.observations = $scope.leafObservations(observations);
+				$.each(observations, function(key, object) {
+					$scope.getLeafObservations(object);
+				});
+				
 				console.log($scope.observations);
+				
 				// Date convert to Nepali
 				$scope.convertDateTime = function(dateTime){
 					var converter = new DateConverter();
@@ -473,26 +428,24 @@ try{
 		var link = function ($scope, element, attrs, ngModel) {
 			
 			var formConceptNames = appService.getAppDescriptor().getConfigValue("formsToGetDataForUICustomization");
-			
-			spinner.forPromise(observationsService.fetch($scope.patient.uuid, formConceptNames, "latest", 1, $scope.visitUuid, undefined).then(function (response) {	
-				console.log(response.data);
+				
+			spinner.forPromise(observationsService.fetch($scope.patient.uuid, formConceptNames, "all", undefined, undefined, undefined).then(function (response) {	
 				var recordedObs = $rootScope.leafObservations(response.data);
-
+				
 				// Check each concepts for previous observations, if found disable the option in the anwser list
 				var conceptsToCheckForPreviousObs = appService.getAppDescriptor().getConfigValue("conceptsToCheckForPreviousObs");
 				$("button.grid-row-element").each(function( index ) {	
 					var answerButton = $(this);
 					var answerButtonTitle = answerButton.attr('title');
-					
-					$.each(recordedObs, function(i, obs){
-						if(obs != null && obs != undefined){
-							$.each(conceptsToCheckForPreviousObs, function(x, concept){
-								if(obs.conceptName == concept && 
-								conceptsToCheckForPreviousObs.includes(obs.conceptName) && 
-								obs.value == answerButtonTitle && obs.value != "Other" && obs.value != "Additional"){
-									answerButton.attr('disabled','true');
-									answerButton.addClass('active');
-								}
+				
+					$.each(response.data, function(i, observations){
+						if(observations != null && observations != undefined){
+							$.each(observations.groupMembers, function(i, obs){
+								$.each(conceptsToCheckForPreviousObs, function(x,concept){
+									if(obs.conceptNameToDisplay == concept && obs.valueAsString == answerButtonTitle && obs.valueAsString != "Other" && obs.valueAsString != "Additional"){
+										answerButton.attr('disabled','true');
+									}
+								});
 							});
 						}
 					});
@@ -508,55 +461,13 @@ try{
 							$.each(recordedObs, function(k, o){
 								if(o.conceptName == c && oneTimeObs.includes(c)){
 									var val = (o.type == 'Date')? $rootScope.convertDateTime(new Date(o.value)): o.value;
-									// Clear previously created contents
-									textInput.siblings().remove();
-									
-									// Add latest values after the input field
-									textInput.after( "<div style='border:1px solid lightgreen;padding:10px;width:12.5em' title='"+$rootScope.convertDateTime(o.encounterDateTime)+"'>"+val+"</div>");
-									
-									// Hide the input element
+									textInput.after( "<div title='"+$rootScope.convertDateTime(o.encounterDateTime)+"'>"+val+" | "+$rootScope.convertDateTime(o.encounterDateTime)+"</div>");
 									textInput.parent().children('input').css('display','none');
 									textInput.css('display','none');
 								}
 							});
 						}
 					});
-				});
-				
-				$("label").each(function( i ) {
-					var label = $(this);
-					
-					if(label.children()[0] != undefined){
-					var c = label.children()[0].innerHTML;
-					$.each(recordedObs, function(k, o){
-						if(o.conceptName == c && oneTimeObs.includes(c)){
-							var val = (o.type == 'Date')? $rootScope.convertDateTime(new Date(o.value)): o.value;
-							// Display the latest values
-							var html = "<div style='border:1px solid lightgreen;padding:10px;width:12.5em' title='"+$rootScope.convertDateTime(o.encounterDateTime)+"'>"+val+"</div>";
-							label.next().html(html);
-						}
-					});
-					}
-				});
-				
-				$("label").each(function(i) {
-					var callFunctions = appService.getAppDescriptor().getConfigValue("callFunction");
-					
-					var conceptName = ($(this).children()[0] != undefined) ? $(this).children()[0].innerHTML : "";
-					
-					if(conceptName != "" && callFunctions[conceptName] != undefined && callFunctions[conceptName] != null){
-						var functionToCall = callFunctions[conceptName].functionName;
-						var result = $rootScope[functionToCall](recordedObs);
-						if(result){
-							if(callFunctions[conceptName].action == 'style'){
-								$(this).append("<i class='fa fa-ok' style='color:green'></i>");
-							}else{
-								$(this).append("<div style='padding:5px;background:#efefef'>"+result+"</div>");
-							}
-						}else{
-							$(this).append("<i class='fa fa-exclamation-circle' style='color:red'></i>");
-						}
-					}
 				});
 			}));			
 		};
@@ -604,37 +515,33 @@ try{
 			if(element.context.className === 'visit-date'){
 				var startDateCustom_formatted;
 				var stopDateCustom_formatted;
-								
-				// for visit start date				
-				var startDate = new Date($scope.visitSummary.startDatetime.substr(0,10));
 				
-				// Date Conversion and assigment to the element
-				var startDateconverter = new DateConverter();
-				startDateconverter.setEnglishDate(startDate.getFullYear(), startDate.getMonth()+1, startDate.getDate());						
-				var startDateCustom_formatted = startDateconverter.toNepaliStringLong();				
-				element.context.children[0].innerHTML = startDateCustom_formatted;
+				// for visit start date				
+				var startDate = new Date($scope.visitSummary.startDateTime);
+				
+				// Date Conversion
+				var converter = new DateConverter();
+				converter.setEnglishDate(startDate.getFullYear(), startDate.getMonth()+1, startDate.getDate());						
+				var customDate = converter.toNepaliStringLong();
+				// End date conversion
+				
+				$scope.visitSummary.startDateTime = customDate;
+				//element.context.children[0].innerHTML = startDateCustom_formatted;
 				
 				// for visit stop date
 				if($scope.visitSummary.hasOwnProperty('stopDateTime') && $scope.visitSummary.stopDateTime != null){
-					var endDate = new Date($scope.visitSummary.stopDateTime.substr(0,10));
+					var endDate = new Date($scope.visitSummary.stopDateTime);
 					
 					// Date Conversion
-					var endDateconverter = new DateConverter();
-					endDateconverter.setEnglishDate(endDate.getFullYear(), endDate.getMonth()+1, endDate.getDate());						
-					var stopDateCustom_formatted = endDateconverter.toNepaliStringLong();					
-					element.context.children[1].innerHTML = stopDateCustom_formatted;
+					var converter = new DateConverter();
+					converter.setEnglishDate(endDate.getFullYear(), endDate.getMonth()+1, endDate.getDate());						
+					var customDate = converter.toNepaliStringLong();
+					// End date conversion
+					$scope.visitSummary.stopDateTime = customDate
+					
+					//element.context.children[1].innerHTML = stopDateCustom_formatted;
 
 				}				
-			}
-			
-			// pivot table encounter date column
-			if(element.context.className === 'date'){
-				var date = new Date($scope.startDate.substr(0,10));
-				// Date Conversion and assigment to the element
-				var dateConverter = new DateConverter();
-				dateConverter.setEnglishDate(date.getFullYear(), date.getMonth()+1, date.getDate());						
-				var dateCustom_formatted = dateConverter.toNepaliStringShort();				
-				element[0].innerHTML = dateCustom_formatted;				
 			}
 		};
 		return { link: link };
@@ -699,7 +606,57 @@ try{
 		};
 		return { link: link };
 	});
-	
+
+
+	// SummaryDashboard
+	displayControl.directive('div', ['$rootScope','observationsService', 'appService', 'spinner', '$compile', function ($rootScope, observationsService, appService, spinner, $compile) {
+		var link = function ($scope, element, attrs, ngModel) {
+			if(element.context.className === 'patient-search-wrapper'){
+				//var summaries = appService.getAppDescriptor().getConfigValue("summaries");
+				var myPatients = $rootScope.getPatientList();
+				
+				var conceptNames = [
+					"Gravida Para LMP and EDD",
+					"Antenetal Checkup Details",
+					"HIV and Syphlis Test",
+					"Complications Present",
+					"Intrapartum and Admission Form",
+					"Delivery Form",
+					"Newborn Details",
+					"PNC Checkup"
+				];
+				
+				// Patients with complication
+				$scope.summaryData = {};
+				var patientWithComplications;
+				myPatients.each(function(pt){
+					var temp = {};
+					spinner.forPromise(observationsService.fetch(pt.value.value.uuid, conceptNames, "all", undefined, undefined, undefined).then(function (response) {
+						var patientObs = $rootScope.leafObservations(response.data);
+						console.log(patientObs);
+						var complication = false;
+						$.each(patientObs, function(j,obs){					
+							if(obs.conceptName == 'Complication'){
+								complication = true;
+							}
+						});
+						if(complication){
+							patientWithComplications++
+						}
+					}));
+					$scope.summaryData['Complication'] = patientWithComplications;
+				});
+				
+				$scope.contentUrl = "../plugins/summary.html";
+				
+				var newHtml = $compile("<ng-include src=\"'"+$scope.contentUrl+"'\"></ng-include>")($scope)
+				$(element[0]).after(newHtml);
+			}
+		};
+        return {
+            link: link
+		}
+    }]);
 } catch(e){
 	console.log('Error Occured : '+e);
 }

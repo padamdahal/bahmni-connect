@@ -13,12 +13,18 @@
 							{{convertDateTime(patientDetail.dateCreated)}}
 						</span>
 					</td>
+					<th rowspan="2">Current Age</th>
+					<td rowspan="2">
+						<span ng-repeat="obs in observations track by $index" ng-if="obs.conceptName == 'LMP'">
+							{{calculateEdd(obs.value)['age']}}
+						</span><br/>
+					</td>
 				</tr>
 				<tr>
 					<th>Observations</th>
 					<td>
 						<span ng-repeat="obs in observations" ng-if="obs.formName == 'Gravida Para LMP and EDD'">
-							<span style="font-weight:bold;">{{obs.conceptName}}</span>: {{obs.value}}<br/>
+							<span style="font-weight:bold">{{obs.conceptName}}</span>: {{obs.value}}<br/>
 						</span>
 					</td>
 				</tr>
@@ -33,7 +39,7 @@
 					<th>Estimated Date of Delivery</th>
 					<td>
 						<span ng-repeat="obs in observations" ng-if="obs.conceptName == 'LMP'">
-							{{calculateEdd(obs.value)['date']}} <span style="border-radius:3px; background:#88af28;color:#fff;padding:5px;">{{calculateEdd(obs.value)['remainingDays']}}</span>
+							{{calculateEdd(obs.value)['date']}} <span style="border-radius:3px; background:#88af28;color:#fff;padding:5px">{{calculateEdd(obs.value)['remainingDays']}}</span>
 						</span>
 					</td>
 				</tr>
@@ -56,7 +62,7 @@
 						<span ng-repeat="dt in observations" ng-if="dt.conceptName == 'ANC Checkup' && dt.value == visit">
 							<i class="fa fa-check" style="font-size:150%" ng-if="visit != 'Other'"></i>
 							<br ng-if="visit != 'Other'"/>
-							<span class="small" style="color:#999;font-size:80%;">{{convertDateTime(dt.encounterDateTime)}}</span>
+							<span class="small" style="color:#999;font-size:80%">{{convertDateTime(dt.encounterDateTime)}}</span>
 						</span>
 						
 					</td>
@@ -159,12 +165,12 @@
 				<tr>
 					<td ng-repeat="pnc in expectedPnc" style="color:green;font-weight:bold;text-align:center">
 						<span ng-repeat="dt in observations" ng-if="dt.conceptName == 'PNC detail' && dt.value == pnc">
-							<i class="fa fa-check" style="font-size:150%"></i><br/><span class="small" style="color:#999;font-size:80%;">{{convertDateTime(dt.encounterDateTime)}}</span>
+							<i class="fa fa-check" style="font-size:150%"></i><br/><span class="small" style="color:#999;font-size:80%">{{convertDateTime(dt.encounterDateTime)}}</span>
 						</span>
 					</td>
 					<td style="">
 						<span ng-repeat="dt in observations" ng-if="dt.conceptName == 'PNC detail' && dt.value == 'Additional'">
-							<span class="small" style="color:#999;font-size:80%;">{{convertDateTime(dt.encounterDateTime)}}</span></br>
+							<span class="small" style="color:#999;font-size:80%">{{convertDateTime(dt.encounterDateTime)}}</span>
 						</span>
 					</td>
 					<td style="text-align:center">
@@ -215,5 +221,3 @@
 		</div>
     </section>
 </div>
-
-
