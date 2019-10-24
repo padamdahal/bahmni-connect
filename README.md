@@ -1,6 +1,6 @@
 # Bahmni Connect with Nepal Plugins
 
-[Original README.MD from Bahmni Connect] (https://github.com/Bahmni/bahmni-connect/blob/master/README.md)
+[Original README.MD from Bahmni Connect](https://github.com/Bahmni/bahmni-connect/blob/master/README.md)
 
 # Changes - Nepal Plugins features
 * Plugins directory in directory structure with nepali date libraries, custom display control, custom patient dashboard
