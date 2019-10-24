@@ -34,7 +34,7 @@ There are no changes in bahmni connect core application codes.
 
 ## Build - Chrome App (PWA)
 <pre>
-grunt compass # generate css files
-grunt --force chrome #minify and bundle PWA related source code
+grunt compass #generate css files
+grunt --force chrome #minify and bundle PWA related source code, --force optional
 grunt generate-sw #generate service workers files
 </pre>
