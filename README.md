@@ -13,13 +13,21 @@
 
 # Code Changes
 Updated the ui/gruntfile.js to add the all contents of plugins directory to be copied in dist and make them available offline during build.
-	Line 27 to 29
-	Line 74 to 78
-	Line 231
-	Line 299
+
+See:
+<pre>
+Line 27 to 29
+Line 74 to 78
+Line 231
+Line 299
+</pre>
 
 Updated clinical/index.html to include additional js and css files from plugins directory
-	Line 607 to 611
+
+See:
+<pre>
+Line 607 to 611
+</pre>
 
 All features are handeled by angular at default views provided by core bahmni-connect.
 There are no changes in bahmni connect core application codes.
