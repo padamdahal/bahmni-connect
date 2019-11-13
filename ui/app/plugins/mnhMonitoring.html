@@ -24,7 +24,7 @@
 					<th>Observations</th>
 					<td>
 						<span ng-repeat="obs in observations" ng-if="obs.formName == 'Gravida Para LMP and EDD'">
-							<span style="font-weight:bold">{{obs.conceptName}}</span>: {{obs.value}}<br/>
+							<span style="font-weight:bold">{{obs.conceptName}}</span>: <span ng-if="obs.conceptName=='LMP'">{{convertDateTime(obs.value)}} | </span>{{obs.value}}<br/>
 						</span>
 					</td>
 				</tr>
@@ -94,7 +94,7 @@
 					</td>
 					<td style="text-align:left">
 						<span ng-repeat="dt in observations" ng-if="dt.formName == 'HIV and Syphlis Test'">
-							{{dt.conceptName}} : {{dt.value}} | {{convertDateTime(dt.encounterDateTime)}}<br/>
+							<span ng-if="dt.conceptName!='HIV counseling and test'">{{dt.conceptName}} : </span>{{dt.value}} | {{convertDateTime(dt.encounterDateTime)}}<br/>
 						</span>
 					</td>
 				</tr>

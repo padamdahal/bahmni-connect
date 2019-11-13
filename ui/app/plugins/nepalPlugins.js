@@ -232,8 +232,9 @@ try{
 		
 		/* extract leaf observation values from nested concepts/forms */
 		var Json = [];
+		var parentConcept;
 		$rootScope.leafObservations = function(observations) {
-			var parentConcept;
+			
 			$.each(observations, function(i, observation){
 				if(observation.hasOwnProperty("groupMembers") && observation !== undefined){
 					var temp = {};
@@ -251,7 +252,6 @@ try{
 						temp["provider"] = observation.providers[0].name;
 						temp["formName"] = parentConcept;
 						Json.push(temp);
-						parentConcept = '';
 					}
 				}
 			});
@@ -322,9 +322,10 @@ try{
 		
 			/* extract leaf observation values from nested concepts/forms */
 			
-			var Json = [];	
+			var Json = [];
+			var parentConcept;
 			$scope.leafObservations = function(observations) {
-				var parentConcept;
+				
 				$.each(observations, function(i, observation){
 					if(observation.hasOwnProperty("groupMembers") && observation !== undefined){
 						var temp = {};
@@ -342,7 +343,6 @@ try{
 							temp["provider"] = observation.providers[0].name;
 							temp["formName"] = parentConcept;
 							Json.push(temp);
-							parentConcept = '';
 						}
 					}
 				});
@@ -356,7 +356,7 @@ try{
 			
 			spinner.forPromise(observationsService.fetch($scope.patient.uuid, conceptNames, "all", 1, $scope.visitUuid, undefined).then(function (response) {
                 var observations = response.data;
-				console.log(observations);
+
 				$scope.expectedVisits = ["Fourth Month", "Sixth Month", "Eighth Month", "Ninth Month","Other"];
 				
 				$scope.observations = $scope.leafObservations(observations);
